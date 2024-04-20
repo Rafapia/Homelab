@@ -61,9 +61,9 @@ Here's a table that summarizes all of our network design:
 We have separated each of our other components into their respective Markdown files. We listed them here for reference, in the order that we set them up.
 
 
-1. [Proxmox](proxmox.md)
-2. [pfSense](pfsense.md)
-3. [PiHole](pihole.md)
+1. [Proxmox](1_proxmox.md)
+2. [pfSense](2_pfsense.md)
+3. [PiHole](3_pihole.md)
 4. [TrueNAS]()
 5. [HomeAssistant]()
 6. [k3s]()

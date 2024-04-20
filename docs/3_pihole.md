@@ -4,7 +4,7 @@
 
 As described in Wikipedia, [PiHole](https://pi-hole.net/) is "a Linux network-level advertisement and Internet tracker blocking application which acts as a DNS sinkhole and optionally a DHCP server, intended for use on a private network. It is designed for low-power embedded devices with network capability, such as the Raspberry Pi, but can be installed on almost any Linux machine." ([source](https://en.wikipedia.org/wiki/Pi-hole)). Since we're already running a much more capable DCHP server on our pfSense VM, we will use PiHole only as a DNS sinkhole for ad and/or telemetry blocking.
 
-While originally designed to run on a RaspberryPi - hence its name - we will run a containerized version of PiHole in a dedicated VM on our Proxmox server. This VM will simply be a Ubuntu Server instance of the VM template we built in the [Proxmox](proxmox.md) stage of the project, and will be responsible for running all of our Docker containers in our Homelab.
+While originally designed to run on a RaspberryPi - hence its name - we will run a containerized version of PiHole in a dedicated VM on our Proxmox server. This VM will simply be a Ubuntu Server instance of the VM template we built in the [Proxmox](1_proxmox.md) stage of the project, and will be responsible for running all of our Docker containers in our Homelab.
 
 ### Docker
 

@@ -15,7 +15,7 @@ Installation is made very simple by following Netgate's guide to virtualize pfSe
 Then, once pfSense is installed, we once again spin up the VM and do some initial configuration through its command line:
 ![](../media/pfsense_cml.png)
 
-First, as discussed in the [Proxmox](proxmox.md) section, we set the `vmbr0/vtnet0` bridge to be the LAN interface and `vmbr1/vtnet1` to be the WAN interface in pfSense. Then, since we want our router to also have a static IP address for obvious reasons, we specify the static IP `10.10.0.1/16` on the LAN interface (`vmbr0/vtnet0`).
+First, as discussed in the [Proxmox](1_proxmox.md) section, we set the `vmbr0/vtnet0` bridge to be the LAN interface and `vmbr1/vtnet1` to be the WAN interface in pfSense. Then, since we want our router to also have a static IP address for obvious reasons, we specify the static IP `10.10.0.1/16` on the LAN interface (`vmbr0/vtnet0`).
 
 Lastly, we reset our *webConfigurator* password, so we don't have the default `admin:pfSense` username and password. This is only temporary, as later we will create another user with admin privileges, and disable the default admin user login.
 
