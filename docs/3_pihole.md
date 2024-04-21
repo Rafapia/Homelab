@@ -48,6 +48,32 @@ services:
 ```
 *Source: https://github.com/pi-hole/docker-pi-hole*
 
-## Setup
+We can then deploy this stack and access our Pi-hole server using the address we set for it in pfSense [here](2_pfsense.md#pihole). 
+
+## Pi-hole Setup
+
+Our Pi-hole Dashboard looks like this (after adding several Adlists, which we'll go over below):
+
+![](https://github.com/Rafapia/Homelab/assets/36646488/b5cd1012-0953-49fa-9625-0cb4b59240bd)
 
 ### Lists
+
+For now, all we did was simply add several URLs/domains to our Adlists, which we quickly did by pasting the following list of space-separated addresses:
+
+https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts https://raw.githubusercontent.com/PolishFiltersTeam/KADhosts/master/KADhosts.txt https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Spam/hosts https://v.firebog.net/hosts/static/w3kbl.txt https://adaway.org/hosts.txt https://v.firebog.net/hosts/AdguardDNS.txt https://v.firebog.net/hosts/Admiral.txt https://raw.githubusercontent.com/anudeepND/blacklist/master/adservers.txt https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt https://v.firebog.net/hosts/Easylist.txt https://v.firebog.net/hosts/Easyprivacy.txt https://v.firebog.net/hosts/Prigent-Ads.txt https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.2o7Net/hosts https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt https://hostfiles.frogeye.fr/firstparty-trackers-hosts.txt https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware%20List/AntiMalwareHosts.txt https://osint.digitalside.it/Threat-Intel/lists/latestdomains.txt https://s3.amazonaws.com/lists.disconnect.me/simple_malvertising.txt https://v.firebog.net/hosts/Prigent-Crypto.txt https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Risk/hosts https://bitbucket.org/ethanr/dns-blacklists/raw/8575c9f96e5b4a1308f2f12394abd86d0927a4a0/bad_lists/Mandiant_APT1_Report_Appendix_D.txt https://phishing.army/download/phishing_army_blocklist_extended.txt https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-malware.txt https://v.firebog.net/hosts/RPiList-Malware.txt https://v.firebog.net/hosts/RPiList-Phishing.txt https://raw.githubusercontent.com/Spam404/lists/master/main-blacklist.txt https://raw.githubusercontent.com/AssoEchap/stalkerware-indicators/master/generated/hosts https://urlhaus.abuse.ch/downloads/hostfile/ https://zerodot1.gitlab.io/CoinBlockerLists/hosts_browser https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=0&mimetype=plaintext https://raw.githubusercontent.com/FadeMind/hosts.extras/master/UncheckyAds/hosts https://raw.githubusercontent.com/bigdargon/hostsVN/master/hosts
+
+## Test
+
+After adding all of the above URLs, we can see that we now block over 800,000 domains and can test whether Pi-hole is working using an [Ad Block Test](https://d3ward.github.io/toolz/adblock). 
+
+Without Pi-hole, we get the following results:
+
+![](https://github.com/Rafapia/Homelab/assets/36646488/7f85e635-4df0-4d3a-82dd-ed2c5a5f3d8a)
+
+And with Pi-hole, we get:
+
+#### TODO
+![]()
+
+As you can see, most ads are being blocked and we can add any additional list of domains to our AdLists as we see fit.
+
