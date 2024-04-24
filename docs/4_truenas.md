@@ -1,4 +1,4 @@
-# ![](https://www.truenas.com/wp-content/uploads/2021/02/TrueNAS-SCALE-Logo-iX-Blog.png)
+# ![](https://www.truenas.com/wp-content/uploads/2021/09/TrueNAS-Core-Logo.png)
 
 ## Installation
 
@@ -6,15 +6,15 @@ We first created another VM in Proxmox and set it to boot using the ISO image do
 
 We want to be able to use the SDD we bought for TrueNAS, so we followed [these steps](https://pve.proxmox.com/wiki/Passthrough_Physical_Disk_to_Virtual_Machine_(VM)) to pass through our physical disk to the VM we just created without a PCIe controller. We can confirm that the disk was added by checking the Hardware tab for the VM in Proxmox:
 
-![](https://github.com/Rafapia/Homelab/assets/36646488/197e802b-eb90-4737-9009-d6b940b0e3f6)
+![](../media/truenas_disk_proxmox.png)
 
 After this, we started the VM and went through the installation steps for TrueNAS. After the installation was successful, we had the following screen:
 
-![](https://github.com/Rafapia/Homelab/assets/36646488/a5388e32-eb37-4c47-b9e8-3b965525a290)
+![](../media/truenas_console.png)
 
 However, we still haven't set the address for this machine in pfSense, so the IP for the Public Interface listed above is not the final one we'll have. After configuring the static mapping for this machine [here](2_pfsense.md#pihole), we rebooted the machine and the console now shows the final and correct IP address:
 
-![](https://github.com/Rafapia/Homelab/assets/36646488/d91355a1-1e51-4e74-95b9-f794ebb2c133)
+![](../media/truenas_console_2.png)
 
 ## Syncthing Setup
 
@@ -22,16 +22,16 @@ However, we still haven't set the address for this machine in pfSense, so the IP
 
 To achieve this, we first opened the TrueNAS public interface at the IP we set for it in pfSense, which is also the one shown after the installation steps above. This is what the dashboard looks like:
 
-![](https://github.com/Rafapia/Homelab/assets/36646488/cafdf261-8c98-46ee-a59e-a8ecfe01386a)
+![](../media/truenas_dashboard.png)
 
 We then created a new pool inside the Storage tab and set it to use the SSD we added to the VM for storage. We configured it to have a striped data layout, since we only have one disk, although mirrored (or anything with some redundancy) would be ideal and safer. Next, in the Apps tab, we searched for and installed the Syncthing plugin. We could access its interface through a given port, which we saved using go/ links. Finally, we simply downloaded the [Syncthing application](https://syncthing.net/downloads/) on both the MacBook and the desktop.
 
 Once Syncthing was running on all 3 devices, we connected the MacBook + Mini PC and the desktop + Mini PC. Inside the Syncthing instance running on the MacBook, we can go to Actions > Show ID and copy its device ID, which is used to add it as a remote device on the Mini PC. We did the same thing for the desktop + Mini PC. Once all devices are connected properly, we set the appropriate folders/paths we want to sync between both pairs. We also configured things such as file versioning and how often these folders will be rescanned for any new files. We synced the Documents, Downloads, and Videos folders, and this is what the Syncthing interface running in the TrueNAS platform looked like:
 
-![](https://github.com/Rafapia/Homelab/assets/36646488/e40731b0-6012-4ca8-a0c5-25f3c470bc9e)
+![](../media/truenas_syncthing_truenas.png)
 
 As you can see, it has both the PC and MacBook added as remote devices and is sharing every folder with both. The instance on the desktop PC, on the other hand, is only connected to and sharing folders with the instance running on the Mini PC:
 
-![](https://github.com/Rafapia/Homelab/assets/36646488/d0be4ccc-3ba8-41fb-ba85-34a3f1f0fc1f)
+![](../media/truenas_syncthing_pc.png)
 
 Once we confirmed everything was synced and working properly, we could simply close these tabs and leave each instance running in the background of all devices. The desktop and MacBook would automatically have their files synced with the Mini PC whenever either turns on, and their files would all be eventually synced with each other without the need of having them both on at the same time.

@@ -69,7 +69,7 @@ TODO
 
 ### VPN
 
-TODO
+One of the benefits of building a Homelab like we're doing is that we can host our own VPN, which allows us to connect back home and have full access to our devices without exposing or forwarding any ports on our router. For example, as a college student, this has been extremely helpful for working on homework and projects that require more computational power - we could simply connect to our VPN and safely SSH into our PCs. This, combined with our encrypted and locked-down VPN service, makes for a much safer way of connecting back home and greatly reduces the risk of unauthorized parties having access to our devices and data. Another benefit is that we can also forward *all* traffic to our network when connected from somewhere else, which will also forward all DNS traffic to our home router, which will keep filtering and blocking undesired requests.
 
 #### OpenVPN
 
@@ -81,7 +81,7 @@ TODO
 
 ### Hosting
 
-TODO
+TODO: HAAS
 
 #### HAProxy
 
