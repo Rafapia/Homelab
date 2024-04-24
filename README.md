@@ -39,7 +39,7 @@ Our network will live in the `10.10.0.0/16` address space. We settled on this la
 
 Our core and trusted devices - such as our Proxmox server, our PC, and our laptop - will go on the `10.10.0.0/24` network. We'll start numbering them from *10.10.0.50* onward - a somewhat arbitrary choice -, leaving some IP space before them in case we have another block of devices in the future we want to address there.
 
-A special exception to this is our [pfSense](pfsense.md) instance, which is virtualized in our Proxmox server and will have the address `10.10.0.1`, as it will also be the default gateway for all devices in our network.
+A special exception to this is our [pfSense](docs/2_pfsense.md) instance, which is virtualized in our Proxmox server and will have the address `10.10.0.1`, as it will also be the default gateway for all devices in our network.
 
 Here's a table that summarizes all of our network design: 
 
@@ -61,9 +61,9 @@ Here's a table that summarizes all of our network design:
 We have separated each of our other components into their respective Markdown files. We listed them here for reference, in the order that we set them up.
 
 
-1. [Proxmox](1_proxmox.md)
-2. [pfSense](2_pfsense.md)
-3. [PiHole](3_pihole.md)
-4. [TrueNAS]()
+1. [Proxmox](docs/1_proxmox.md)
+2. [pfSense](docs/2_pfsense.md)
+3. [PiHole](docs/3_pihole.md)
+4. [TrueNAS](docs/4_truenas.md)
 5. [HomeAssistant]()
 6. [k3s]()
