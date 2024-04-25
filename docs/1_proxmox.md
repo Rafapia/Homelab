@@ -35,13 +35,15 @@ To keep all the documentation organized, we'll cover the Proxmox side of the set
 
 TODO
 
+Pass CPU flags
+
 ### Template VM
 
-One of the great practicalities of having a Proxmox server running is how quickly we can spin up a VM - whether that is for deploying some permanent service or just testing. And with each VM completely isolated from each other, we risk very little in terms of breaking anything we've already deployed.  
+One of the great practicalities of having a Proxmox server running is how quickly we can spin up a VM - whether that is for deploying some permanent service or just testing. And with each VM completely isolated from the other, we risk very little in terms of breaking anything we've already deployed.  
 
-To make this process even faster and effortless, we can make a template VM: that is, a VM that we can't actually turn on, but can quickly clone into separate VMs which are all pre-configured the way we want. This way, we don't have to go through all the installation and configuration process of an OS - like Ubuntu - every time we want to create a quick VM.
+To make this process even faster and effortless, we can make a template VM: that is, a VM that we can't actually turn on, but can quickly clone into separate VMs which are all pre-configured the way we want. This way, we don't have to go through all the installation and configuration processes of an OS - like Ubuntu - every time we want to create a quick VM.
 
-For this, we'll create a Ubuntu Server template and make use of the built-in [CloudInit](https://cloud-init.io/) functionality on Proxmox. With it, we can pre-configure this template to have our personal linux user, SSH keys, and networking configurations, and let CloudInit take care of the rest.
+For this, we'll create a Ubuntu Server template and make use of the built-in [CloudInit](https://cloud-init.io/) functionality on Proxmox. With it, we can pre-configure this template to have our Linux user, SSH keys, and networking configurations, and let CloudInit take care of the rest.
 
 While we did this process manually, we found this bash script that does essentially what we did, which we modified and included below for brevity:
 
@@ -92,7 +94,7 @@ Now, we just need to turn the VM on and follow the TrueNAS installation, which w
 
 ### HomeAssistant
 
-To set up HomeAssistane, we first logged in to our Proxmox machine as *root*. Then, we downloaded the `.qcow2` HomeAssistant disk from the [HomeAssistant's guide](https://www.home-assistant.io/installation/alternative#install-home-assistant-operating-system) with
+To set up HomeAssistane, we first logged in to our Proxmox machine as *root*. Then, we downloaded the `.qcow2` HomeAssistant disk from the [HomeAssistant's guide](https://www.home-assistant.io/installation/alternative#install-home-assistant-operating-system) with:
 
 ```bash
 cd
@@ -106,7 +108,7 @@ From there, under the *System* tab, we change the BIOS to UEFI, select the EFI S
 
 ![](../media/proxmox_homeassistant_System.png)
 
-Then, on the *Disks* tab we delete the *scsi0* default disk since we downloaded as we'll be importing the one we downloaded previously from the HomeAssistant guide. After that, we give the VM 2 CPU cores and 2GB of RAM - as these are the minimum recommended specs, as can be seen [here](https://www.home-assistant.io/installation/alternative#create-the-virtual-machine) -, and finally we select `vmbr0` as our network (as we established that this is our LAN bridge).
+Then, on the *Disks* tab, we delete the *scsi0* default disk since we downloaded it as we'll be importing the one we downloaded previously from the HomeAssistant guide. After that, we give the VM 2 CPU cores and 2GB of RAM - as these are the minimum recommended specs, as can be seen [here](https://www.home-assistant.io/installation/alternative#create-the-virtual-machine) -, and finally we select `vmbr0` as our network (as we established that this is our LAN bridge).
 
 Optionally, we can also set this VM to turn on on boot, so it will automatically spin up. This is recommended, as we might depend on it for many home functions.
 
@@ -114,7 +116,7 @@ Our VM setup is almost done, all we now have to do is attach our downloaded disk
 
 ```bash
 unxz haos_ova-12.2.qcow2.xz
-qm importdisk <VM ID> haos_ova-12.2.qcow2.xz local-lvm
+qm importdisk <VM_ID> haos_ova-12.2.qcow2.xz local-lvm
 ```
 
 Now, all we have to do is turn on the VM and follow HomeAssistant's Installation, which we go over [here](5_homeassistant.md#instalaltion).

@@ -2,9 +2,7 @@
 
 ## Installation
 
-
-
-After this, we started the VM and went through the installation steps for TrueNAS. After the installation was successful, we had the following screen:
+After setting up the VM on Proxmox, documented [here](1_proxmox.md#truenas), we started the VM and went through the installation steps for TrueNAS. After the installation was successful, we had the following screen:
 
 ![](../media/truenas_console.png)
 

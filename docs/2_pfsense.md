@@ -73,13 +73,13 @@ TODO
 
 #### DDNS
 
-Since we're using Cloudflare as our DNS provider, to keep our "*homelab.com*" record always pointing to our home IP adrdess, all we have to do is navigate to **Services > Dynamic DNS** and click **Add**. From there, we just have to fill out the fields with our Cloudflare information, as pfSense instructs:
+Since we're using Cloudflare as our DNS provider, to keep our "*homelab.com*" record always pointing to our home IP address, all we have to do is navigate to **Services > Dynamic DNS** and click **Add**. From there, we just have to fill out the fields with our Cloudflare information, as pfSense instructs:
 
 ![](../media/pfsense_ddns_setup.png)
 
 Since we are hosting all of our services from home, it is easier to make all of our subdomains automatically point to our home IP address with a single DDNS daemon. We can do this by putting a `@` on the *Hostname* field, followed by our *homelab.com* address on our domain field. If we were hosting other services in other places - like AWS, GCP, or anything else outside of our home - we could create one DDNS entry specifically for each subdomain hosted at home, so instead of `@` we could put something like `homeassistant`, if we wanted to access our HomeAssistant service from `homeassistant.homelab.com`.
 
-Another important thing is to enable the **Cloudflare Proxy**, which is supported out-of-the-box by pfSense. As the description states, this makes all of our services' traffic be routed to Cloudflare's servers before going to the requesting client. This has the benefits of hiding our home IP from the public, making use of Cloudflare's DDoS protection, and is fully encrypted between home and Cloudflare, where it will apply our TLS/SSL certificates there before forwarding the connection to the clients. And since we also bought our domains from Cloudflare, they automatically issue trusted TLS/SSL certificates for our "*homelab.com*", which makes our connection encrypted from end-to-end and very secure.
+Another important thing is to enable the **Cloudflare Proxy**, which is supported out-of-the-box by pfSense. As the description states, this makes all of our services' traffic be routed to Cloudflare's servers before going to the requesting client. This has the benefits of hiding our home IP from the public, making use of Cloudflare's DDoS protection, and is fully encrypted between home and Cloudflare, where it will apply our TLS/SSL certificates there before forwarding the connection to the clients. And since we also bought our domains from Cloudflare, they automatically issue trusted TLS/SSL certificates for our "*homelab.com*", which makes our connection encrypted from end to end and very secure.
 
 With that done, we should have a successfully set up DDNS service which appears like so:
 
