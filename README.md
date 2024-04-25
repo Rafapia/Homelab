@@ -65,5 +65,5 @@ We have separated each of our other components into their respective Markdown fi
 2. [pfSense](docs/2_pfsense.md)
 3. [PiHole](docs/3_pihole.md)
 4. [TrueNAS](docs/4_truenas.md)
-5. [HomeAssistant]()
-6. [k3s]()
+5. [HomeAssistant](docs/5_homeassistant.md)
+<!-- 6. [k3s]() -->

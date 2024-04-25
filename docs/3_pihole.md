@@ -1,4 +1,4 @@
-# ![](https://www.endpointdev.com/blog/2020/12/pihole-great-holiday-gift/pihole-logo.png)
+# ![](../media/pihole_logo.png)
 
 ## Installation
 
@@ -16,7 +16,11 @@ Then, for ease of use, we will also install [Portainer](https://docs.portainer.i
 
 Once installed, our Portainer GUI looks like this:
 
-![]()
+![](../media//pihole_portainer_dashboard.png)
+
+with our PiHole stack:
+
+![](../media/pihole_portainer_stack.png)
 
 ### Docker compose
 
@@ -33,18 +37,18 @@ services:
     ports:
       - "53:53/tcp"
       - "53:53/udp"
-      - "67:67/udp" # Only required if you are using Pi-hole as your DHCP server
+      # - "67:67/udp" # Only required if you are using Pi-hole as your DHCP server, which we are not
       - "80:80/tcp"
     environment:
       TZ: 'America/Chicago'
-      # WEBPASSWORD: 'set a secure password here or it will be random'
+      WEBPASSWORD: 'set a secure password here or it will be random'
     # Volumes store your data between container upgrades
     volumes:
       - './etc-pihole:/etc/pihole'
       - './etc-dnsmasq.d:/etc/dnsmasq.d'
     #   https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
-    cap_add:
-      - NET_ADMIN # Required if you are using Pi-hole as your DHCP server, else not needed
+    # cap_add:
+    #   - NET_ADMIN # Required if you are using Pi-hole as your DHCP server, which we are not
     restart: unless-stopped
 ```
 *Source: https://github.com/pi-hole/docker-pi-hole*

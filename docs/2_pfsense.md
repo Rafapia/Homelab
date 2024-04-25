@@ -1,4 +1,4 @@
-# ![](https://upload.wikimedia.org/wikipedia/commons/b/b9/PfSense_logo.png)
+# ![](../media/pfsense_logo.png)
 
 ## Dashboard
 

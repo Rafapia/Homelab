@@ -1,4 +1,4 @@
-# ![](https://www.truenas.com/wp-content/uploads/2021/09/TrueNAS-Core-Logo.png)
+# ![](../media/truenas_logo.png)
 
 ## Installation
 
@@ -16,7 +16,7 @@ However, we still haven't set the address for this machine in pfSense, so the IP
 
 ![](../media/truenas_console_2.png)
 
-## Syncthing Setup
+## Syncthing
 
 [Syncthing](https://www.truenas.com/docs/scale/scaletutorials/apps/enterpriseapps/syncthing/) is a "file synchronization application that provides a simple and secure environment for file sharing". Instead of using external servers to backup or sync our files, it will allow us to sync files directly with devices within the network we're creating without the "use or need of a central server or cloud storage". We will have Syncthing installed on a desktop computer and a MacBook, which are the two devices with the files/folders we're concerned about syncing. Although one would normally need both devices turned on simultaneously to sync (which almost never happens naturally), we can overcome this challenge using our Mini PC. Since we will also have Syncthing installed in the TrueNAS platform running inside our Mini PC and the PC will always be turned on, it can act as a "bridge" that both devices connect to. When the MacBook is turned on, the relevant files will sync with and be uploaded to the SSD inside the Mini PC. The next time the desktop is turned on, any new files inside the Mini PC will be synced to the desktop. Similarly, any new relevant files on the desktop will be synced to the Mini PC, which will be synced with the MacBook whenever it turns on.
 

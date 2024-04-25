@@ -1,4 +1,4 @@
-# ![](https://www.proxmox.com/images/proxmox/Proxmox_logo_standard_hex_600px.png)
+# ![](../media/proxmox_logo.png)
 
 ## Installation
 
@@ -40,5 +40,32 @@ Here's a screenshot of our Proxmox network configuration:
 ### TrueNAS
 
 ### HomeAssistant
+
+To set up HomeAssistane, we first logged in to our Proxmox machine as *root*. Then, we downloaded the `.qcow2` HomeAssistant disk from the [HomeAssistant's guide](https://www.home-assistant.io/installation/alternative#install-home-assistant-operating-system) with
+
+```bash
+cd
+wget https://github.com/home-assistant/operating-system/releases/download/12.2/haos_ova-12.2.qcow2.xz
+```
+Then, we created a new VM with no local disk:
+
+![](../media/proxmox_homeassistant_OS.png)
+
+From there, under the *System* tab, we change the BIOS to UEFI, select the EFI Storage, and **disable** *Pre-enrolled keys*, or otherwise the HomeAssistantOD does not boot:
+
+![](../media/proxmox_homeassistant_System.png)
+
+Then, on the *Disks we delete the *scsi0* default disk since we downloaded as we'll be importing the one we downloaded previously from the HomeAssistant guide. After that, we give the VM 2 CPU cores and 2GB of RAM - as these are the minimum recommended specs, as can be seen [here](https://www.home-assistant.io/installation/alternative#create-the-virtual-machine) -, and finally we select `vmbr0` as our network (as we established that this is our LAN bridge).
+
+Optionally, we can also set this VM to turn on on boot, so it will automatically spin up. This is recommended, as we might depend on it for many home functions.
+
+Our VM setup is almost done, all we now have to do is attach our downloaded disk onto the VM. We first extract the *.xz* file we downloaded and import it onto the VM with
+
+```bash
+unxz haos_ova-12.2.qcow2.xz
+qm importdisk <VM ID> haos_ova-12.2.qcow2.xz local-lvm
+```
+
+Now, all we have to do is turn on the VM and follow HomeAssistant's Installation, which we go over [here](5_homeassistant.md#instalaltion).
 
 ### k3s
