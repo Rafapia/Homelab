@@ -14,7 +14,7 @@ From there, we simply follow the setup steps: we create a user, set our location
 
 ## Configuration
 
-The setup process for HomeAssistant is very straightforward. The first-login wizard takes care of most essential configurations. Then, we just go to **Settings > General** and make sure that our region, language, timezone, dark mode, and all other similar settings about our home and UX are correct.
+The setup process for HomeAssistant is very straightforward. The first-login wizard takes care of the essential configurations. Then, we just go to **Settings > General** and make sure that our region, language, timezone, dark mode, and all other similar settings about our home and UI are correct.
 
 Another great thing about HomeAssistant is that they have great mobile apps. Aside from just providing access to the dashboard on the go, just like the web interface, it turns the phone itself into a collection of sensors. Once logged in, our phone will appear under devices, and if we go to **Settings > People > \<Your Username\>**, we can associate the phone to our Profile:
 
@@ -25,7 +25,7 @@ To log into our HOmeAssistant server on the mobile app, it will first ask for ou
 
 ## Devices
 
-Adding new devices is really simple: all we have to do is go to **Settings > Devices & Services**, and add the integration of the device we want to add! For the WiFi-enabled devices, we first set static IP mappings on pfSense first, so we never have to update any IPs here due to DHCP lease changes. We have a RokuTV and a few Wiz WiFi smartbulbs (which unfortunately broke after a few days, but not due to our setup). We also added the HomeKit Bridge integration, which allows us to control our devices transparently through iPhone's *Home* app, which also has Siri integration. Our devices now look like this:
+Adding new devices is simple: all we have to do is go to **Settings > Devices & Services**, and add the integration of the device we want to add! For the WiFi-enabled devices, we first set static IP mappings on pfSense first, so we never have to update any IPs here due to DHCP lease changes. We have a RokuTV and a few Wiz WiFi smart bulbs (which unfortunately broke after a few days, but not due to our setup). We also added the HomeKit Bridge integration, which allows us to control our devices transparently through iPhone's *Home* app, which also has Siri integration. Our devices now look like this:
 
 ![](../media/homeassistant_devices.png)
 

@@ -108,7 +108,7 @@ Without Pi-hole, we get the following results:
 
 And with Pi-hole, we get:
 
-#### TODO
+TODO
 ![]()
 
 As you can see, most ads are being blocked and we can add any additional list of domains to our AdLists as we see fit.

@@ -2,11 +2,7 @@
 
 ## Installation
 
-We first created another VM in Proxmox and set it to boot using the ISO image downloaded from the following [link](https://www.truenas.com/download-truenas-scale/).
 
-We want to be able to use the SDD we bought for TrueNAS, so we followed [these steps](https://pve.proxmox.com/wiki/Passthrough_Physical_Disk_to_Virtual_Machine_(VM)) to pass through our physical disk to the VM we just created without a PCIe controller. We can confirm that the disk was added by checking the Hardware tab for the VM in Proxmox:
-
-![](../media/truenas_disk_proxmox.png)
 
 After this, we started the VM and went through the installation steps for TrueNAS. After the installation was successful, we had the following screen:
 

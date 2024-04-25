@@ -52,7 +52,7 @@ Here's a table that summarizes all of our network design:
 | 10.10.2.0/24   	| Our main trusted VMs, such as networking-related VMs, TrueNAS, HomeAssistant... 	| Want to be reachable from trusted devices.                                                             	|
 | 10.10.3.0/24   	| IoT, untrusted devices.                                                         	| These should not be able to communicate with trusted devices and services, except for HomeAssistant.   	|
 | 10.10.4.0/24   	| IPTV Cameras - not in use currently, but in the future.                         	| These have no reason to have internet access.                                                          	|
-| 10.10.5.0/24   	|                                                                                 	|                                                                                                        	|
+| 10.10.5.0/24   	| ...                                                                             	|                                                                                                        	|
 | 10.10.100.0/24 	| Our DHCP server pool lives here.                                                	| Essentially a guest network, as all trusted devices will have static mappings.                         	|
 |                	|                                                                                 	|                                                                                                        	|
 
