@@ -16,26 +16,34 @@ This brings us to another point simple but important point: VM boot order. Proxm
 
 ### Network
 
-Our Proxmox machine will have 2 wired Ethernet connections: one coming from our ISP's modem - which will be our WAN -, and another which will go to our switch/WAP - which is our LAN. Since our mini-PC only has one built-in Ethernet adapter, we bought a USB-to-Ethernet adapter. We arbitrarily assigned our onboard Ethernet adapter to be our LAN, and the adapter one to be our WAN - perhaps because we care more about LAN stability and performance, rather than WAN, as many of our more network-intensive services are inward-facing.
+Our Proxmox machine will have 2 wired Ethernet connections: one coming from our ISP's modem - which will be our WAN -, and another which will go to our switch/WAP - which is our LAN. Since our mini-PC only has one built-in Ethernet adapter, we bought a USB-to-Ethernet adapter. We arbitrarily assigned our onboard Ethernet port to be our LAN, and the USB adapter one to be our WAN - perhaps because we care more about LAN stability and performance, rather than WAN, as many of our more network-intensive services are inward-facing - and thus WAN gets the USB adapter.
 
-Then, we make two Linux bridges, one for each adapter - `vmbr0` for LAN and `vmbr1` for LAN. This is what will be passed to the VMs, which provides them with a network connection. Then, as we mentioned above, we solve our "network bootstrapping" problem by statically assigning our network configuration for our Proxmox machine on the `vmbr0` (the LAN bridge) like so:
+Then, we make two Linux bridges, one for each adapter - `vmbr0` for LAN and `vmbr1` for LAN. This is what will be passed to the VMs, which provides them with a network connection. Then, as we mentioned above, we solve our "network bootstrapping" problem by manually assigning our network configuration for our Proxmox machine on the `vmbr0` (the LAN bridge) like so:
 
 * IP: 10.10.0.50/16
 * DNS: 10.10.0.1 *(our pfSense VM's IP)*
 * Gateway: 10.10.0.1 *(our pfSense VM's IP)*
+
+and adding a matching static DHCP lease on pfSense [later](2_pfsense.md#static-ip-reservations).
   
 Here's a screenshot of our Proxmox network configuration:
 ![](../media/proxmox_network_config.png)
 
+An important note is that once Proxmox boots, it will not have internet access - or LAN for that matter - until the pfSense VM also finishes booting up. Thus, we'll make sure to mark *Start at boot* for pfSense's VM.
+
 ## Services and VMs
 
-To keep all the documentation organized, we'll cover the Proxmox side of the setup of all the following services here, and the remainder of the setup in the service's respective platform in their own documents.
+To keep all the documentation organized, we'll cover only the Proxmox side of the setup of all the following services here, and the remainder of the setup in the service's respective platform in their own documents.
 
 ### pfSense
 
-TODO
+Installing pfSense on Proxmox is made very easy by [NetGate's official guide](https://docs.netgate.com/pfsense/en/latest/recipes/virtualize-proxmox-ve.html). Since we've already taken care of the networking on the Proxmox side in the steps above, we can skip straight to the [*Creating a Virtual Machine*](https://docs.netgate.com/pfsense/en/latest/recipes/virtualize-proxmox-ve.html#creating-a-virtual-machine) part of the guide. From there, we just followed the guide, with the difference that we assigned mode cores to the VM (so if we want to run IDS/IPS, we'll have the compute), assigned more memory, and just made sure we selected the correct Linux bridges we created above in the [Network](#network) section.
 
-Pass CPU flags
+Lastly, as we've mentioned above, our pfSense VM must be up and running at all times the machine is on. Thus, we configured it to be the first to turn on, and we gave it a large delay so that it is certainly running before we boot anything other services that likely need connectivity. Here's a screenshot of this setting, borrowed from above:
+
+![](../media/proxmox_pfsense_bootorder.png)
+
+From there, we can simply turn on the VM and follow pfSense's installation process, which we outlined [here](2_pfsense.md#installation).
 
 ### Template VM
 
@@ -51,17 +59,17 @@ While we did this process manually, we found this bash script that does essentia
 # Download fresh copy of the image. Delete if already installed.
 cd
 rm -f jammy-server-cloudimg-amd64.img
-wget -q https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img
+wget https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img
 
 # Create VM
-sudo qm create 9000 --name "ubuntu-2204-cloudinit-template" --memory 2048 --cores 2 --net0 virtio,bridge=vmbr0
-sudo qm importdisk 9000 jammy-server-cloudimg-amd64.img local-lvm
-sudo qm set 9000 --scsihw virtio-scsi-pci --scsi0 local-lvm:vm-9000-disk-0
-sudo qm set 9000 --boot c --bootdisk scsi0
-sudo qm set 9000 --ide2 local-lvm:cloudinit
-sudo qm set 9000 --serial0 socket --vga serial0
-sudo qm set 9000 --agent enabled=1
-sudo qm template 9000
+sudo qm create 9999 --name "ubuntu-2204-cloudinit-template" --memory 2048 --cores 2 --net0 virtio,bridge=vmbr0
+sudo qm importdisk 9999 jammy-server-cloudimg-amd64.img local-lvm
+sudo qm set 9999 --scsihw virtio-scsi-pci --scsi0 local-lvm:vm-9999-disk-0
+sudo qm set 9999 --boot c --bootdisk scsi0
+sudo qm set 9999 --ide2 local-lvm:cloudinit
+sudo qm set 9999 --serial0 socket --vga serial0
+sudo qm set 9999 --agent enabled=1
+sudo qm template 9999
 
 # Delete image, not needed anymore.
 rm -f jammy-server-cloudimg-amd64.img
@@ -76,7 +84,17 @@ and every time a new VM is made with this template, it will already have the cor
 
 ### PiHole
 
-TODO
+Here's one instance where we benefit from having created a Ubuntu Server template [above](#template-vm). Here, we can simply right-click on the template VM, click *Clone*,
+
+![](../media/proxmox_template_clone_1.png)
+
+which will bring up this window:
+
+![](../media/proxmox_template_clone_2.png)
+
+Here, we name our VM, optionally select a different *VM ID*, change the *Mode* to *Full Clone* (so our new VM isn't dependent on having this clone around forever), and pick our *local-lvm* local storage as we've done for all other VMs. Then, we simply click *Clone* and a new Ubuntu Server VM will be created in seconds, already pre-configured with our chosen user and SSH keys we've set [above](#template-vm)!
+
+This is all for the Proxmox setup, and the remainder of the setup is now done in the [PiHole document](3_pihole.md#installation).
 
 ### TrueNAS
 
@@ -124,3 +142,22 @@ Now, all we have to do is turn on the VM and follow HomeAssistant's Installation
 <!-- ### k3s
 
 TODO -->
+
+## Troubleshooting
+
+### IOMMU
+
+Sometimes, IOMMU will not be correctly set up on the host machine, so we cannot properly pass through hardware devices to our VMs. We've found some of these links useful for debugging:
+
+* https://www.servethehome.com/how-to-pass-through-pcie-nics-with-proxmox-ve-on-intel-and-amd/
+* https://pve.proxmox.com/wiki/PCI_Passthrough
+* https://pve.proxmox.com/wiki/PCI(e)_Passthrough
+
+Note that this will be different depending on the hardware.
+
+### Software Updates
+
+Proxmox is free and open-source, however, their default *enterprise* update channel for the system's package manager (*apt*) is a paid subscription. This is not a problem, since we can just add the non-subscription repository, which may not be enterprise-ready but is well beyond anything we would need at home.
+
+* https://pve.proxmox.com/wiki/Package_Repositories#sysadmin_no_subscription_repo
+

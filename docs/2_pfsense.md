@@ -51,7 +51,7 @@ As mentioned many times, we will assign static IP addresses for all of our core 
 
 While DNS is not strictly speaking a hard concept to understand, or a hard part of the project to implement, it is more often than not the source of many of the problems we faced in our Homelab project, and it is generally very hard to trace.
 
-Here's a beautiful *haiku* we found about this, which helps us always remember to check DNS before we find ourselves too deep into trying to solve a seemingly unrelated and unsolvable problem:
+Here's a superb *haiku* we found about this, which helps us always remember to check DNS before we find ourselves too deep into trying to solve a seemingly unrelated and unsolvable problem:
 
 ![](https://www.cyberciti.biz/media/new/cms/2017/04/dns.jpg)
 
@@ -85,13 +85,23 @@ With that done, we should have a successfully set up DDNS service which appears 
 
 ![](../media/pfsense_ddns.png)
 
-### VPN
-
 One of the benefits of building a Homelab like we're doing is that we can host our own VPN, which allows us to connect back home and have full access to our devices without exposing or forwarding any ports on our router. For example, as a college student, this has been extremely helpful for working on homework and projects that require more computational power - we could simply connect to our VPN and safely SSH into our PCs. This, combined with our encrypted and locked-down VPN service, makes for a much safer way of connecting back home and greatly reduces the risk of unauthorized parties having access to our devices and data. Another benefit is that we can also forward *all* traffic to our network when connected from somewhere else, which will also forward all DNS traffic to our home router, which will keep filtering and blocking undesired requests.
 
-#### OpenVPN
+### OpenVPN
 
-TODO
+We used pfSense's guide on how to set up OpenVPN, which can be found [here](https://docs.netgate.com/pfsense/en/latest/recipes/openvpn-ra.html) and [here](https://docs.netgate.com/pfsense/en/latest/vpn/openvpn/index.html).
+
+Then, there is a package that we can install under *System > Package Manager* called *openvpn-client-export*. It makes the process of exporting client configurations - with their respective keys - effortless. All you have to do is create a user for each person you want to have access to your VPN under *System > User Manager*, apply the appropriate permission/settings, and make sure to add a certificate for that user when creating it in the *User Certificates* section:
+
+![](../media/pfsense_new_user.png)
+
+and then create a certificate with the OpenVPN Certificate Authority (CA) like so:
+
+![](../media/pfsense_new_user_certificate.png)
+
+Then, to export a new client's configurations, which can be imported into an OpenVPN client, we just have to go to *VPN > OpenVPN > Client Export > OpenVPN Clients* and pick the appropriate file kind.
+
+### Hosting
 
 #### HAProxy
 
@@ -100,3 +110,63 @@ TODO
 #### ACME Certificates
 
 TODO
+
+## Troubleshooting
+
+### Disable Hardware Checksum
+
+"When using VirtIO interfaces in Proxmox VE, network interface hardware checksum offloading must be disabled. Current versions of pfSense software attempt to disable this automatically for `vtnet` interfaces, but the best practice is to double-check the setting in case changes in Proxmox VE result in the automatic process failing."
+
+ * https://docs.netgate.com/pfsense/en/latest/recipes/virtualize-proxmox-ve.html#disable-hardware-checksums-with-proxmox-ve-virtio
+
+### HAPRoxy interfering with the *webConfigurator*
+
+* Check **WebGUI redirect: Disable *webConfigurator* redirect rule** under *System > Advanced > Admin Access > webConfigurator*.
+
+### DNS Issues
+
+#### DNS Rebind
+
+If, after messing with HAProxy you get this:
+
+![](../media/pfsense_dns_rebind_error.png)
+
+make sure that either **DNS Rebind: CheckDisable DNS Rebinding Checks** is checked or you have **Alternate Hostname** set with your pfSense's FQDN under *System > Advanced > Admin Access > webConfigurator*.
+
+#### No DNS
+
+Make sure that under *System > General Setup > DNS Server Settings*, you have your PiHole's IP address as the first server, but **also** have additional public DNS servers listed below, as such:
+
+![](../media/pfsense_dns_servers.png)
+
+#### Cannot access your services from home through HAProxy
+
+First, make sure that your NAT settings under *System > Advanced > Firewall & NAT > Network Address Translation* are as such:
+
+![](../media/pfsense_nat.png)
+
+Then, make sure that *Services > DNS Resolver* is **Enabled** and you have entries for each of your services, as such:
+
+![](../media/pfsense_dns_overrides.png)
+
+Note that they **MUST** point to your pfSense's IP address, and **NOT** the actual service's IP, since HAProxy lives in pfSense.
+
+### NTP
+
+Just to make sure your pfSense system has the correct time settings - which, if not synced properly, can cause a wide variety of problems - add Google's and NIST's NTP servers under *System > General Setup > Localization*. They are both *stratum 1* servers, very reliable and accurate.
+
+* time.google.com
+* time.nist.gov
+
+![](../media/pfsense_locale.png)
+
+and that your NPT service is up and running, under *Services > NTP > Settings*:
+
+![](../media/pfsense_ntp.png)
+
+
+### Private Networks
+
+If you for some reason don't have a Public IP through your ISP, or you're running your pfSense behind another router in a [private network](https://en.wikipedia.org/wiki/Private_network), you must uncheck the **Block private networks and loopback addresses** under *Interfaces > WAN > Reserved Networks*:
+
+![](../media/pfsense_block_private_networks.png)

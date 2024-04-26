@@ -108,8 +108,6 @@ Without Pi-hole, we get the following results:
 
 And with Pi-hole, we get:
 
-TODO
-![]()
+![](../media/pihole_block_test_better.png)
 
-As you can see, most ads are being blocked and we can add any additional list of domains to our AdLists as we see fit.
-
+As you can see, a lot more ads are being blocked and we can add any additional list of domains to our AdLists as we see fit.
