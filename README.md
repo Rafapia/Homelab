@@ -23,6 +23,8 @@ That leads us to our hardware selection:
 * Wifi Access Point
 * Assorted cables
 
+![](media/hardware.jpg)
+
 ## Networking
 
 *Note: While we'll try to be as thorough as we can, we **will** omit specific IP addresses, domain names, and any forms of IDs that we believe could compromise our home network safety or provide unnecessary insight into our network. If there are any inconsistencies between specific IP addresses we mention - say, for example, we say in one section that our Proxmox machine's IP is x, but later on a screenshot it's y, that does not necessarily mean we misconfigured something, but rather they are all examples. The important thing is that in your implementation everything that should match matches. That's why we keep a private table with all static IP addresses we've assigned and their respective devices/VMs/notes.*

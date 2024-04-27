@@ -61,7 +61,7 @@ cd
 rm -f jammy-server-cloudimg-amd64.img
 wget https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img
 
-# Create VM
+# Create VM.
 sudo qm create 9999 --name "ubuntu-2204-cloudinit-template" --memory 2048 --cores 2 --net0 virtio,bridge=vmbr0
 sudo qm importdisk 9999 jammy-server-cloudimg-amd64.img local-lvm
 sudo qm set 9999 --scsihw virtio-scsi-pci --scsi0 local-lvm:vm-9999-disk-0
@@ -80,7 +80,7 @@ Now, we can finish setting up our CloudInit options on the Proxmox UI under our 
 
 ![](../media/proxmox_cloudinit.png)
 
-and every time a new VM is made with this template, it will already have the correct linux user created, with our password, and our SSH keys preinstalled; all we have to do is SSH into the machine and start our new project!
+and every time a new VM is made with this template, it will already have the correct Linux user created, with our password, and our SSH keys preinstalled; all we have to do is SSH into the machine and start our new project!
 
 ### PiHole
 
@@ -138,10 +138,6 @@ qm importdisk <VM_ID> haos_ova-12.2.qcow2.xz local-lvm
 ```
 
 Now, all we have to do is turn on the VM and follow HomeAssistant's Installation, which we go over [here](5_homeassistant.md#instalaltion).
-
-<!-- ### k3s
-
-TODO -->
 
 ## Troubleshooting
 

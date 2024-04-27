@@ -69,7 +69,19 @@ As we mentioned in the Wizard section, we also added a public DNS service as a s
 
 #### PiHole
 
-TODO
+There are a few different ways of forwarding all of our DNS queries to PiHole. We chose the cleanest, which involves setting up the IP address of the PiHole machine in a single place. This way, if we ever change the IP address of the PiHole VM, we'll only have to update a single configuration in pfSense, and everything else should work.
+
+To do so, we went to *System > General Setup > DNS Server Settings*, and added PiHole's IP address as the **first** DNS server. We also added two other public DNS servers: Quad9's DNS and Google's DNS. We also made sure to **NOT** check the *DNS Server Override: Allow DNS server list to be overridden by DHCP/PPP on WAN or remote OpenVPN server* box (so that our DNS configurations aren't overriden by whatever our ISP's DHCP configuration is), and made sure we selected *Use local DNS (127.0.0.1), fall back to remote DNS Servers (Default)* under *DNS Resolution Behavior*, like so:
+
+![](../media/pfsense_dns_pihole.png)
+
+This way, as we discussed above when talking about our [DNS Resolver](#dns-resolver), pfSense (*10.10.0.1*) will be our DNS server for the network. So when a device makes a DNS request, it will do so to pfSense, which will forward it to [DNS Resolver](#dns-resolver). This service will then check for any DNS overrides, and if not overridden, will then forward the request to PiHole (the first address on our DNS Servers). If PiHole fails to respond/is down, it then falls back to the other two public DNS addresses - which are very reliable, so we won't break our network because of DNS. If PiHole is available, as it should always be, then it will filter the requests based on the blocklists we set there and only then, if not being blocked by our lists, it will forward that request to a public DNS server and resolve the query, sending the response back the opposite path. A *very* in-depth explanation of the whole process can be found [here](https://docs.netgate.com/pfsense/en/latest/services/dhcp/ipv4.html#servers).
+
+For all this to work, when setting up [DHCP](#dhcp), it is important to **NOT** add any DNS overrides. So the fields under *Services > DNS Resolver > Servers* should look like this:
+
+![](../media/pfsense_dns_dhcp.png)
+
+This makes the DHCP Server's DNS server be pfSense itself. This behavior is documented on the bottom of the image and in Netgate's Docs, [here](https://docs.netgate.com/pfsense/en/latest/services/dhcp/ipv4.html#servers).
 
 #### DDNS
 
@@ -102,6 +114,8 @@ and then create a certificate with the OpenVPN Certificate Authority (CA) like s
 Then, to export a new client's configurations, which can be imported into an OpenVPN client, we just have to go to *VPN > OpenVPN > Client Export > OpenVPN Clients* and pick the appropriate file kind.
 
 ### Hosting
+
+This part of the setup assumes that your ISP provides you with a public IP, even if not static.
 
 #### HAProxy
 
