@@ -71,7 +71,7 @@ As we mentioned in the Wizard section, we also added a public DNS service as a s
 
 There are a few different ways of forwarding all of our DNS queries to PiHole. We chose the cleanest, which involves setting up the IP address of the PiHole machine in a single place. This way, if we ever change the IP address of the PiHole VM, we'll only have to update a single configuration in pfSense, and everything else should work.
 
-To do so, we went to *System > General Setup > DNS Server Settings*, and added PiHole's IP address as the **first** DNS server. We also added two other public DNS servers: Quad9's DNS and Google's DNS. We also made sure to **NOT** check the *DNS Server Override: Allow DNS server list to be overridden by DHCP/PPP on WAN or remote OpenVPN server* box (so that our DNS configurations aren't overriden by whatever our ISP's DHCP configuration is), and made sure we selected *Use local DNS (127.0.0.1), fall back to remote DNS Servers (Default)* under *DNS Resolution Behavior*, like so:
+To do so, we went to *System > General Setup > DNS Server Settings* and added PiHole's IP address as the **first** DNS server. We also added two other public DNS servers: Quad9's DNS and Google's DNS. We also made sure to **NOT** check the *DNS Server Override: Allow DNS server list to be overridden by DHCP/PPP on WAN or remote OpenVPN server* box (so that our DNS configurations aren't overriden by whatever our ISP's DHCP configuration is), and made sure we selected *Use local DNS (127.0.0.1), fall back to remote DNS Servers (Default)* under *DNS Resolution Behavior*, like so:
 
 ![](../media/pfsense_dns_pihole.png)
 
@@ -81,7 +81,7 @@ For all this to work, when setting up [DHCP](#dhcp), it is important to **NOT** 
 
 ![](../media/pfsense_dns_dhcp.png)
 
-This makes the DHCP Server's DNS server be pfSense itself. This behavior is documented on the bottom of the image and in Netgate's Docs, [here](https://docs.netgate.com/pfsense/en/latest/services/dhcp/ipv4.html#servers).
+This makes the DHCP Server's DNS server be pfSense itself. This behavior is documented at the bottom of the image and in Netgate's Docs, [here](https://docs.netgate.com/pfsense/en/latest/services/dhcp/ipv4.html#servers).
 
 #### DDNS
 
@@ -144,7 +144,7 @@ However, there is one last problem: with just our self-signed certificate, Cloud
 
 Understanding this is the hardest part, but setting it up is very straightforward. First, we go to *Services > ACME Certificates > Account keys* (after having installed the *acme* package under *System > Package Manager*), and click *+ Add*.
 
-We then give it some name like `LetsEncrypt_Test` and optionally a description, and pick the option *Let's Encrypt Staging ACME v2...* as outlined in the image below:
+We then give it some name like `LetsEncrypt_Test` and optionally a description and pick the option *Let's Encrypt Staging ACME v2...* as outlined in the image below:
 
 ![](../media/pfsense_acme_ca.png)
 
@@ -156,7 +156,7 @@ Now, go to *Services > ACME Certificates > Certificates*, and click on *+ Add*. 
 
 ![](../media/pfsense_acme_cert.png)
 
-Click *Save* and then *Issue/Renew* on the certificate. If everything goes well, it shold look something like this:
+Click *Save* and then *Issue/Renew* on the certificate. If everything goes well, it should look something like this:
 
 ![](../media/pfsense_acme_cert_success.png)
 

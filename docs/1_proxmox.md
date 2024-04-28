@@ -104,7 +104,7 @@ Since [TrueNAS Core](https://www.truenas.com/truenas-core/), like pfSense, is ba
 
 ![](../media/proxmox_truenas_OS.png)
 
-Also, we want the TrueNAS VM to have full access to the disk we installed for it - that iss, we need to pass through the disk to the VM on our hypervisor. For that, we followed [these steps](https://pve.proxmox.com/wiki/Passthrough_Physical_Disk_to_Virtual_Machine_(VM)) from Proxmox's documentation to pass through our physical disk to the VM we just created without a PCIe controller. We can confirm that the disk was added by checking the Hardware tab for the VM in Proxmox:
+Also, we want the TrueNAS VM to have full access to the disk we installed for it - that is, we need to pass through the disk to the VM on our hypervisor. For that, we followed [these steps](https://pve.proxmox.com/wiki/Passthrough_Physical_Disk_to_Virtual_Machine_(VM)) from Proxmox's documentation to pass through our physical disk to the VM we just created without a PCIe controller. We can confirm that the disk was added by checking the Hardware tab for the VM in Proxmox:
 
 ![](../media/proxmox_truenas_disk.png)
 
